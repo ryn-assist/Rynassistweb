@@ -32,10 +32,21 @@ function harga(){
   document.querySelector("#app").innerHTML=nav("harga")+'<main class="page shell"><div class="page-title"><div><span class="eyebrow">DAFTAR HARGA</span><h1>Pilih Paket</h1><p>Data contoh ini nantinya bisa kamu edit dari Admin.</p></div><a class="ghost" href="#/">← Beranda</a></div><div class="price-grid">'+cards+'</div></main>'+footer();
 }
 function refund(){
-  document.querySelector("#app").innerHTML=nav("refund")+'<main class="page shell"><div class="page-title"><div><span class="eyebrow">REFUND</span><h1>Kalkulator Refund</h1><p>Hitung estimasi refund berdasarkan harga, durasi, dan service fee.</p></div><a class="ghost" href="#/">← Beranda</a></div><section class="card calc"><div class="form-grid"><div class="field"><label>Harga Beli</label><input id="buy" type="number" min="0" placeholder="45000"></div><div class="field"><label>Total Durasi (hari)</label><input id="total" type="number" min="1" placeholder="30"></div><div class="field"><label>Durasi Terpakai (hari)</label><input id="used" type="number" min="0" placeholder="10"></div><div class="field"><label>Service Fee</label><select id="fee"><option value="0.8">0.8</option><option value="0.7">0.7</option><option value="1">1.0</option></select></div></div><div class="result"><div><span class="muted">Estimasi Total Refund</span><br><strong id="refundResult">Rp0</strong></div><button class="primary" id="copyRefund">Salin Hasil</button></div><p class="muted" style="font-size:12px;margin-top:14px">Formula sementara: Harga Beli × Sisa Durasi ÷ Total Durasi × Service Fee.</p></section></main>'+footer();
-  let b=document.querySelector("#buy"),t=document.querySelector("#total"),u=document.querySelector("#used"),f=document.querySelector("#fee"),r=document.querySelector("#refundResult");
-  function calc(){let buy=+b.value,total=+t.value,used=Math.min(+u.value,total),remain=Math.max(total-used,0);r.textContent=rupiah(buy&&total?(buy*remain/total)*(+f.value):0)}
-  [b,t,u,f].forEach(function(x){x.addEventListener("input",calc)});
+  document.querySelector("#app").innerHTML=nav("refund")+'<main class="page shell"><div class="page-title"><div><span class="eyebrow">REFUND</span><h1>Kalkulator Refund</h1><p>Service fee akan dipilih otomatis berdasarkan durasi penggunaan akun.</p></div><a class="ghost" href="#/">← Beranda</a></div><section class="card calc"><div class="form-grid"><div class="field"><label>Harga Beli</label><input id="buy" type="number" min="0" placeholder="8000"></div><div class="field"><label>Total Durasi Premium (hari)</label><input id="total" type="number" min="1" placeholder="30"></div><div class="field"><label>Durasi Penggunaan (hari)</label><input id="used" type="number" min="0" placeholder="6"></div><div class="field"><label>Service Fee <span class="muted">(otomatis)</span></label><input id="feeDisplay" type="text" value="Masukkan durasi" readonly></div></div><div class="result"><div><span class="muted">Estimasi Total Refund</span><br><strong id="refundResult">Rp0</strong></div><button class="primary" id="copyRefund">Salin Hasil</button></div><div class="refund-rules"><strong>Refund Rules</strong><div>4–7 hari → Service Fee 0,8</div><div>8–30 hari → Service Fee 0,7</div><div class="muted">Rumus: Harga Beli × Sisa Durasi ÷ Total Durasi Premium × Service Fee</div></div></section></main>'+footer();
+  let b=document.querySelector("#buy"),t=document.querySelector("#total"),u=document.querySelector("#used"),f=document.querySelector("#feeDisplay"),r=document.querySelector("#refundResult");
+  function getFee(used){
+    if(used>=4 && used<=7)return 0.8;
+    if(used>=8 && used<=30)return 0.7;
+    return null;
+  }
+  function calc(){
+    let buy=+b.value,total=+t.value,used=+u.value;
+    used=Math.max(0,Math.min(used,total));
+    let fee=getFee(used),remain=Math.max(total-used,0);
+    f.value=fee===null ? (used===0 ? "Masukkan durasi" : "Di luar rules") : fee.toString().replace(".",",");
+    r.textContent=rupiah(buy&&total&&fee!==null ? (buy*remain/total)*fee : 0);
+  }
+  [b,t,u].forEach(function(x){x.addEventListener("input",calc)});
   document.querySelector("#copyRefund").onclick=async function(){await navigator.clipboard?.writeText(r.textContent);this.textContent="✓ Tersalin";setTimeout(()=>this.textContent="Salin Hasil",1200)}
 }
 function admin(){
