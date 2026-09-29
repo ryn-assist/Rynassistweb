@@ -32,7 +32,7 @@ function harga(){
   document.querySelector("#app").innerHTML=nav("harga")+'<main class="page shell"><div class="page-title"><div><span class="eyebrow">DAFTAR HARGA</span><h1>Pilih Paket</h1><p>Data contoh ini nantinya bisa kamu edit dari Admin.</p></div><a class="ghost" href="#/">← Beranda</a></div><div class="price-grid">'+cards+'</div></main>'+footer();
 }
 function refund(){
-  document.querySelector("#app").innerHTML=nav("refund")+'<main class="page shell"><div class="page-title"><div><span class="eyebrow">REFUND</span><h1>Kalkulator Refund</h1><p>Service fee akan dipilih otomatis berdasarkan durasi penggunaan akun.</p></div><a class="ghost" href="#/">← Beranda</a></div><section class="card calc"><div class="form-grid"><div class="field"><label>Harga Beli</label><input id="buy" type="number" min="0" placeholder="8000"></div><div class="field"><label>Total Durasi Premium (hari)</label><input id="total" type="number" min="1" placeholder="30"></div><div class="field"><label>Durasi Penggunaan (hari)</label><input id="used" type="number" min="0" placeholder="6"></div><div class="field"><label>Service Fee <span class="muted">(otomatis)</span></label><input id="feeDisplay" type="text" value="Masukkan durasi" readonly></div></div><div class="result"><div><span class="muted">Estimasi Total Refund</span><br><strong id="refundResult">Rp0</strong></div><button class="primary" id="copyRefund">Salin Hasil</button></div><div class="refund-rules"><strong>Refund Rules</strong><div>4–7 hari → Service Fee 0,8</div><div>8–30 hari → Service Fee 0,7</div><div class="muted">Rumus: Harga Beli × Sisa Durasi ÷ Total Durasi Premium × Service Fee</div></div></section></main>'+footer();
+  document.querySelector("#app").innerHTML=nav("refund")+'<main class="page shell"><div class="page-title"><div><span class="eyebrow">REFUND</span><h1>Kalkulator Refund</h1><p>Hitung total refund otomatis berdasarkan sisa durasi dan service fee.</p></div><a class="ghost" href="#/">← Beranda</a></div><section class="card calc"><div class="form-grid"><div class="field"><label>Harga Beli</label><input id="buy" type="number" min="0" placeholder="8000"></div><div class="field"><label>Total Durasi Premium (hari)</label><input id="total" type="number" min="1" placeholder="30"></div><div class="field"><label>Sudah Digunakan (hari)</label><input id="used" type="number" min="0" placeholder="6"></div><div class="field"><label>Service Fee Otomatis</label><input id="feeDisplay" type="text" value="—" readonly></div></div><div class="result"><div><span class="muted">Estimasi Total Refund</span><br><strong id="refundResult">Rp0</strong></div><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="primary" id="calculateRefund">Hitung Refund ♡</button><button class="ghost" id="resetRefund">Reset</button></div></div><div class="refund-rules"><strong>✦ REFUND RULES ✦</strong><div>✧ Pemakaian 4–7 hari → Service Fee <b>0,8</b></div><div>✧ Pemakaian 8–30 hari → Service Fee <b>0,7</b></div><div class="formula-box">Harga beli × sisa durasi ÷ total durasi premium × Service Fee = Total Refund</div></div></section></main>'+footer();
   let b=document.querySelector("#buy"),t=document.querySelector("#total"),u=document.querySelector("#used"),f=document.querySelector("#feeDisplay"),r=document.querySelector("#refundResult");
   function getFee(used){
     if(used>=4 && used<=7)return 0.8;
@@ -40,14 +40,16 @@ function refund(){
     return null;
   }
   function calc(){
-    let buy=+b.value,total=+t.value,used=+u.value;
-    used=Math.max(0,Math.min(used,total));
-    let fee=getFee(used),remain=Math.max(total-used,0);
-    f.value=fee===null ? (used===0 ? "Masukkan durasi" : "Di luar rules") : fee.toString().replace(".",",");
-    r.textContent=rupiah(buy&&total&&fee!==null ? (buy*remain/total)*fee : 0);
+    let buy=Number(b.value),total=Number(t.value),used=Number(u.value);
+    if(!buy||!total||used<0){f.value="—";r.textContent="Rp0";return}
+    if(used>total){f.value="Durasi tidak valid";r.textContent="Rp0";return}
+    let fee=getFee(used),remain=total-used;
+    if(fee===null){f.value="—";r.textContent="Rp0";return}
+    f.value=fee.toString().replace(".",",");
+    r.textContent=rupiah((buy*remain/total)*fee);
   }
-  [b,t,u].forEach(function(x){x.addEventListener("input",calc)});
-  document.querySelector("#copyRefund").onclick=async function(){await navigator.clipboard?.writeText(r.textContent);this.textContent="✓ Tersalin";setTimeout(()=>this.textContent="Salin Hasil",1200)}
+  document.querySelector("#calculateRefund").onclick=calc;
+  document.querySelector("#resetRefund").onclick=function(){b.value="";t.value="";u.value="";f.value="—";r.textContent="Rp0"};
 }
 function admin(){
   document.querySelector("#app").innerHTML=nav("")+'<main class="page shell"><div class="page-title"><div><span class="eyebrow">ADMIN</span><h1>Kelola Toko</h1><p>Prototype admin mobile-first. Data sementara tersimpan di browser.</p></div><a class="ghost" href="#/">← Beranda</a></div><div class="card"><div class="admin-tabs"><button class="tab active" data-tab="payment">Payment</button><button class="tab" data-tab="harga">Daftar Harga</button></div><div id="adminContent"></div></div></main>'+footer();
