@@ -48,7 +48,8 @@ function refund(){
     f.value=fee.toString().replace(".",",");
     r.textContent=rupiah((buy*remain/total)*fee);
   }
-  document.querySelector("#calculateRefund").onclick=calc;\n  [b,t,u].forEach(function(el){el.addEventListener("input",calc)});
+  document.querySelector("#calculateRefund").onclick=calc;
+  [b,t,u].forEach(function(el){el.addEventListener("input",calc)});
   document.querySelector("#resetRefund").onclick=function(){b.value="";t.value="";u.value="";f.value="—";r.textContent="Rp0"};
 }
 function admin(){
