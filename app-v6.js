@@ -1,4 +1,4 @@
-const CHARACTER = "assets/ryn-assist-banner.webp";
+const CHARACTER = "https://raw.githubusercontent.com/ryn-assist/Rynassistweb/main/assets/ryn-assist-banner.webp?v=2";
 
 const DEFAULT_PAYMENTS = [
   {id:1,name:"QRIS",detail:"Scan QR untuk pembayaran",icon:"⌁"},
