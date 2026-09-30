@@ -1,4 +1,4 @@
-const CHARACTER = "assets/ryn-assist-banner.webp?v=3";
+const CHARACTER = "https://cdn.jsdelivr.net/gh/ryn-assist/Rynassistweb@main/assets/ryn-assist-banner.webp";
 
 const DEFAULT_PAYMENTS = [
   {id:1,name:"QRIS",detail:"Scan QR untuk pembayaran",icon:"⌁"},
@@ -26,7 +26,7 @@ function footer(){return '<footer class="footer shell">♡ Ryn Assist • Digita
 
 function home(){
  document.querySelector("#app").innerHTML=nav("home")+
- '<main><section class="hero shell"><div class="hero-copy"><span class="eyebrow">✦ RYN ASSIST • DIGITAL STORE</span><h1>Simple, cute,<br><span>made for you.</span></h1><p>Semua kebutuhan toko digital Ryn Assist dalam satu tempat. Cek payment, lihat daftar harga, atau hitung refund tanpa berpindah website.</p><div class="hero-actions"><a class="primary" href="#/harga">Lihat Daftar Harga →</a><a class="ghost" href="#/refund">Kalkulator Refund</a></div></div><div class="hero-banner"><img src="'+CHARACTER+'" alt="Ryn Assist banner" onerror="this.style.display=\'none\'"></div></section>'+
+ '<main><section class="hero shell"><div class="hero-copy"><span class="eyebrow">✦ RYN ASSIST • DIGITAL STORE</span><h1>Simple, cute,<br><span>made for you.</span></h1><p>Semua kebutuhan toko digital Ryn Assist dalam satu tempat. Cek payment, lihat daftar harga, atau hitung refund tanpa berpindah website.</p><div class="hero-actions"><a class="primary" href="#/harga">Lihat Daftar Harga →</a><a class="ghost" href="#/refund">Kalkulator Refund</a></div></div><div class="hero-banner"><img src="'+CHARACTER+'" alt="Ryn Assist banner"></div></section>'+
  '<section class="section shell"><div class="section-head"><span class="eyebrow">MENU UTAMA</span><h2>Pilih yang kamu butuhkan</h2><p>Tiga menu utama, tetap di website yang sama dan nyaman dibuka dari HP.</p></div><div class="cards">'+
  '<a class="card menu-card" href="#/payment"><div class="icon">💳</div><h3>Payment</h3><p>Lihat metode pembayaran dan detail rekening yang tersedia.</p></a>'+
  '<a class="card menu-card" href="#/harga"><div class="icon">🛍️</div><h3>Daftar Harga</h3><p>Lihat paket dan harga produk digital Ryn Assist.</p></a>'+
