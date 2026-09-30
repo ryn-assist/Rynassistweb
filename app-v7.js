@@ -1,4 +1,4 @@
-const CHARACTER = "https://cdn.jsdelivr.net/gh/ryn-assist/Rynassistweb@main/assets/ryn-assist-banner.webp";
+const CHARACTER = "assets/Tak%20berjudul9_20260930093129.png?v=1";
 
 const DEFAULT_PAYMENTS = [
   {id:1,name:"QRIS",detail:"Scan QR untuk pembayaran",icon:"⌁"},
